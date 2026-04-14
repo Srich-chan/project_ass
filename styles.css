@@ -1,0 +1,287 @@
+/* styles.css — минимальный и аккуратный дизайн для статьи про Python и Minecraft */
+/* Используется только Google Fonts (Inter), без эмодзи и сложных анимаций */
+/* Цвета фона подсветки приведены к единому стилю со страницей */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #f8fafc;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+    line-height: 1.5;
+    color: #0f172a;
+    padding: 2rem 1rem;
+}
+
+.page {
+    max-width: 960px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03), 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+/* Шапка */
+.header {
+    padding: 2.5rem 2rem 1.5rem 2rem;
+    border-bottom: 1px solid #e2e8f0;
+    background: #ffffff;
+}
+
+.header h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #1e293b, #2d3a4e);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.subhead {
+    font-size: 1.15rem;
+    color: #334155;
+    font-weight: 400;
+    border-left: 3px solid #3b82f6;
+    padding-left: 1rem;
+    margin-top: 0.5rem;
+}
+
+/* Основной контент */
+.content {
+    padding: 1.8rem 2rem 2.5rem 2rem;
+}
+
+/* Стили секций */
+section {
+    margin-bottom: 2.8rem;
+}
+
+h2 {
+    font-size: 1.7rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid #eef2ff;
+    color: #0f172a;
+}
+
+h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 1.2rem 0 0.6rem 0;
+    color: #1e293b;
+}
+
+p {
+    margin-bottom: 1rem;
+    color: #1e293b;
+}
+
+/* Списки */
+ul, ol {
+    margin: 0.75rem 0 1rem 1.8rem;
+    color: #1f2937;
+}
+
+li {
+    margin: 0.5rem 0;
+    line-height: 1.5;
+}
+
+/* Блоки кода — единый стиль для всех пре-блоков, включая highlight.js */
+pre {
+    background: #0f172a;
+    border-radius: 16px;
+    overflow-x: auto;
+    margin: 1.2rem 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Переопределяем стандартные стили highlight.js, чтобы фон соответствовал теме */
+pre code.hljs,
+code.hljs {
+    background: #0f172a !important;
+    color: #e2e8f0 !important;
+    padding: 1.2rem !important;
+    font-family: 'Menlo', 'Monaco', 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    border-radius: 16px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    display: block;
+}
+
+/* Специфичные цвета для синтаксиса в темной теме (github.min.css поверх, но мы переопределяем) */
+/* Ключевые слова, операторы, функции — делаем читабельными на темном фоне */
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-name,
+.hljs-tag {
+    color: #f472b6 !important;  /* розовый для ключевых слов */
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-section,
+.hljs-attribute,
+.hljs-literal,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-addition {
+    color: #a3e635 !important;  /* светло-зеленый для строк */
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-deletion,
+.hljs-meta {
+    color: #94a3b8 !important;  /* серый для комментариев */
+}
+
+.hljs-number {
+    color: #facc15 !important;  /* желтый для чисел */
+}
+
+.hljs-function .hljs-title,
+.hljs-class .hljs-title {
+    color: #60a5fa !important;  /* голубой для функций */
+}
+
+.hljs-variable,
+.hljs-params {
+    color: #cbd5e1 !important;
+}
+
+/* Инлайн-код (внутри текста) */
+code:not(pre code) {
+    font-family: 'Menlo', 'Monaco', 'Cascadia Code', monospace;
+    background: #f1f5f9;
+    padding: 0.2rem 0.4rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #0c4a6e;
+}
+
+/* Заметка (note) */
+.note {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    padding: 1rem 1.2rem;
+    border-radius: 16px;
+    margin: 1.2rem 0;
+    font-size: 0.95rem;
+}
+
+.note-title {
+    font-weight: 700;
+    color: #1e40af;
+    display: inline-block;
+    margin-right: 0.3rem;
+}
+
+/* Сетка для карточек с API */
+.code-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin: 1.2rem 0;
+}
+
+.code-card {
+    flex: 1 1 200px;
+    background: #f8fafc;
+    border-radius: 20px;
+    padding: 1rem 1rem 0.8rem 1rem;
+    border: 1px solid #e2e8f0;
+    transition: 0.1s ease;
+}
+
+.code-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.code-card pre {
+    margin: 0.5rem 0 0 0;
+}
+
+.code-card pre code.hljs {
+    padding: 0.8rem !important;
+    font-size: 0.75rem;
+}
+
+/* Стили для списка советов */
+.tips-list {
+    list-style-type: square;
+}
+
+/* Футер внутри последней секции */
+.footer-note {
+    margin-top: 1.8rem;
+    padding-top: 1rem;
+    font-size: 0.85rem;
+    color: #475569;
+    text-align: center;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* Адаптивность */
+@media (max-width: 680px) {
+    body {
+        padding: 1rem;
+    }
+    .header {
+        padding: 1.8rem 1.2rem;
+    }
+    .content {
+        padding: 1.2rem 1.2rem 1.8rem;
+    }
+    .header h1 {
+        font-size: 1.8rem;
+    }
+    h2 {
+        font-size: 1.4rem;
+    }
+    .code-grid {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    pre code.hljs,
+    code.hljs {
+        font-size: 0.75rem;
+        padding: 1rem !important;
+    }
+}
+
+/* Простые улучшения читаемости */
+a {
+    color: #2563eb;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+}
+
+a:hover {
+    border-bottom-color: #2563eb;
+}
+
+strong {
+    color: #0f172a;
+    font-weight: 600;
+}
+
+/* Визуальное разделение для примеров */
+section h3 + pre {
+    margin-top: 0.5rem;
+}

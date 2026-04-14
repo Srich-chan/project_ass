@@ -1,17 +1,230 @@
-<!DOCTYPE <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
-  <head>
+<head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title></title>
-    <link href="css/style.css" rel="stylesheet">
-  </head>
-  <body>
-  
-  </body>
-</html>>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Python скриптинг в Minecraft: практическое руководство</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Highlight.js тема (минимальная, светлая) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <h1>Python для Minecraft</h1>
+            <p class="subhead">Написание скриптов, автоматизация и творчество в кубическом мире</p>
+        </header>
 
+        <main class="content">
+            <section class="intro">
+                <p>Minecraft — это не только строительство и выживание, но и мощная платформа для обучения программированию. Используя Python, вы можете создавать скрипты, которые строят огромные конструкции, управляют игровыми сущностями, генерируют миры и даже создают мини-игры. В этой статье разберём основы написания скриптов на Python для Minecraft, познакомимся с библиотеками и напишем первый рабочий код.</p>
+            </section>
 
- 
+            <section class="why-python">
+                <h2>Почему Python?</h2>
+                <p>Python — идеальный выбор для автоматизации в Minecraft благодаря простоте, читаемости и богатой экосистеме. С его помощью даже новичок может за несколько минут написать скрипт, который построит пирамиду или телепортирует игрока. А опытные разработчики используют Python для создания сложных модов, ботов и целых серверных дополнений.</p>
+            </section>
 
+            <section class="tools">
+                <h2>Необходимые инструменты</h2>
+                <ul>
+                    <li><strong>Minecraft Java Edition</strong> (версия 1.12+ или 1.16+ для большинства библиотек)</li>
+                    <li><strong>Raspberry Juice</strong> или <strong>Spigot/Paper</strong> с плагином <strong>RaspberryJuice</strong> — мост между Python и игрой</li>
+                    <li><strong>Библиотека <code>mcpi</code></strong> (MCPI) — основной инструмент для управления миром</li>
+                    <li><strong>Python 3.8+</strong> и любой редактор кода (VS Code, PyCharm или даже Блокнот)</li>
+                </ul>
+                <p>RaspberryJuice — это плагин для сервера Bukkit/Spigot, который эмулирует API Minecraft: Pi Edition. После его установки Python-скрипты могут подключаться к серверу через сокеты и выполнять команды: ставить блоки, перемещать игрока, считывать позицию.</p>
+                <div class="note">
+                    <span class="note-title">Совет</span> — Если вы хотите попробовать без установки сервера, используйте <strong>Minecraft Pi edition</strong> на Raspberry Pi или эмуляцию через <strong>mcpipy</strong>. Но полноценный сервер даёт больше возможностей.
+                </div>
+            </section>
 
+            <section class="setup">
+                <h2>Установка и настройка</h2>
+                <p>Пошаговая инструкция для быстрого старта:</p>
+                <ol>
+                    <li>Скачайте и установите <strong>Java Edition</strong> Minecraft.</li>
+                    <li>Загрузите сервер <strong>Spigot 1.16.5</strong> (или Paper) и запустите его один раз, чтобы создались папки.</li>
+                    <li>Скачайте <strong>RaspberryJuice</strong> — jar-файл плагина с GitHub (последняя версия). Поместите его в папку <code>plugins/</code> сервера.</li>
+                    <li>Перезапустите сервер. Плагин активирует порт 4711 для подключения Python.</li>
+                    <li>Установите библиотеку <code>mcpi</code> в Python: <code>pip install mcpi</code>.</li>
+                    <li>Подключитесь к своему серверу (локальный или по IP) из Minecraft и запустите первый скрипт.</li>
+                </ol>
+                <p>Готово! Теперь вы можете управлять миром из Python.</p>
+            </section>
+
+            <section class="first-script">
+                <h2>Ваш первый скрипт: приветствие и алмазный блок</h2>
+                <p>Давайте создадим скрипт, который подключается к игре, отправляет сообщение игроку и размещает блок алмаза прямо перед ним.</p>
+                <pre><code class="language-python">from mcpi.minecraft import Minecraft
+import time
+
+# Подключаемся к Minecraft серверу (по умолчанию localhost:4711)
+mc = Minecraft.create()
+
+# Получаем координаты игрока
+player_pos = mc.player.getTilePos()
+x, y, z = player_pos.x, player_pos.y, player_pos.z
+
+# Отправляем сообщение в чат
+mc.postToChat("Привет, Minecraft! Это Python скрипт")
+
+# Ставим алмазный блок прямо перед игроком (смещение по оси X)
+mc.setBlock(x + 1, y, z, 57)   # 57 — ID алмазного блока
+
+# Строим небольшую колонну из золота над алмазом
+for i in range(1, 4):
+    mc.setBlock(x + 1, y + i, z, 41)   # 41 — золотой блок
+    time.sleep(0.3)
+
+mc.postToChat("Готово! Алмаз и золотая колонна созданы.")</code></pre>
+                <p>Сохраните этот код в файл <code>first_minecraft.py</code>. Зайдите в мир Minecraft (на сервер с плагином), выполните скрипт — и вы увидите, как в игре появляются блоки, а в чате появляются сообщения.</p>
+            </section>
+
+            <section class="api-basics">
+                <h2>Основы MCPI API</h2>
+                <p>Библиотека <code>mcpi</code> предоставляет интуитивные методы для взаимодействия с миром. Рассмотрим ключевые возможности:</p>
+                <div class="code-grid">
+                    <div class="code-card">
+                        <h3>Работа с игроком</h3>
+                        <pre><code class="language-python">pos = mc.player.getPos()
+mc.player.setPos(x, y, z)
+mc.player.setTilePos(x, y, z)</code></pre>
+                    </div>
+                    <div class="code-card">
+                        <h3>Блоки</h3>
+                        <pre><code class="language-python">mc.setBlock(x, y, z, block_id)
+mc.setBlocks(x1,y1,z1,x2,y2,z2, block_id)
+block = mc.getBlock(x, y, z)</code></pre>
+                    </div>
+                    <div class="code-card">
+                        <h3>Чат и события</h3>
+                        <pre><code class="language-python">mc.postToChat("текст")
+events = mc.events.pollBlockHits()</code></pre>
+                    </div>
+                </div>
+                <p>Полный список ID блоков можно найти в вики Minecraft (например, 1 — камень, 3 — земля, 5 — древесина, 35 — шерсть). Для цветных блоков используйте дополнительные данные (metadata).</p>
+            </section>
+
+            <section class="examples">
+                <h2>Практические примеры скриптов</h2>
+                <p>Рассмотрим три полезных скрипта: автоматическое строительство пирамиды, телепортация по координатам и создание летающего острова.</p>
+
+                <h3>1. Строитель пирамиды из песчаника</h3>
+                <pre><code class="language-python">from mcpi.minecraft import Minecraft
+mc = Minecraft.create()
+
+def build_pyramid(base_x, base_z, height, block_id):
+    # Получаем уровень земли из текущей позиции игрока
+    player = mc.player.getTilePos()
+    base_y = player.y
+    
+    for level in range(height):
+        size = height - level
+        offset = level
+        for i in range(size):
+            for j in range(size):
+                mc.setBlock(base_x + i + offset, base_y + level, base_z + j + offset, block_id)
+    mc.postToChat("Пирамида готова!")
+
+# Построим пирамиду высотой 5 из песчаника (24)
+build_pyramid(0, 0, 5, 24)</code></pre>
+
+                <h3>2. Телепорт по имени игрока</h3>
+                <pre><code class="language-python">from mcpi.minecraft import Minecraft
+mc = Minecraft.create()
+
+def teleport_to_player(target_name):
+    players = mc.getPlayerEntityIds()
+    for pid in players:
+        if mc.entity.getName(pid).lower() == target_name.lower():
+            pos = mc.entity.getTilePos(pid)
+            mc.player.setTilePos(pos.x, pos.y + 2, pos.z)
+            mc.postToChat(f"Телепортировались к {target_name}")
+            return
+    mc.postToChat("Игрок не найден")
+
+teleport_to_player("Steve")</code></pre>
+
+                <h3>3. Летающий остров (сфера из камня)</h3>
+                <pre><code class="language-python">from mcpi.minecraft import Minecraft
+import math
+mc = Minecraft.create()
+
+def sphere(center_x, center_y, center_z, radius, block_id):
+    for x in range(-radius, radius+1):
+        for y in range(-radius, radius+1):
+            for z in range(-radius, radius+1):
+                if x*x + y*y + z*z <= radius*radius:
+                    mc.setBlock(center_x + x, center_y + y, center_z + z, block_id)
+
+# Создаём каменную сферу радиусом 7 на высоте 70
+sphere(0, 70, 0, 7, 1)
+mc.postToChat("Остров-сфера создан!")</code></pre>
+                <p>Все эти скрипты можно комбинировать, добавлять циклы и условия — возможности ограничены лишь фантазией.</p>
+            </section>
+
+            <section class="advanced">
+                <h2>Продвинутые сценарии: события, анимация и боты</h2>
+                <p>MCPI позволяет обрабатывать события — например, когда игрок разрушает блок или нажимает на кнопку. Вы можете написать реактивный скрипт, который реагирует на действия в реальном времени.</p>
+                <pre><code class="language-python">from mcpi.minecraft import Minecraft
+import time
+
+mc = Minecraft.create()
+mc.postToChat("Активирован детектор блоков. Ломай блоки!")
+
+while True:
+    events = mc.events.pollBlockHits()
+    if events:
+        for hit in events:
+            x, y, z = hit.pos.x, hit.pos.y, hit.pos.z
+            mc.postToChat(f"Сломан блок на координатах {x}, {y}, {z}")
+            # Восстанавливаем блок через секунду
+            time.sleep(0.5)
+            mc.setBlock(x, y, z, 1)  # камень
+    time.sleep(0.2)</code></pre>
+                <p>Также вы можете создавать анимированные конструкции, световые шоу, или написать простого бота, который следует за игроком и строит дорожку из розовой шерсти.</p>
+            </section>
+
+            <section class="tips">
+                <h2>Полезные советы и частые ошибки</h2>
+                <ul class="tips-list">
+                    <li><strong>Соединение отклонено:</strong> убедитесь, что сервер запущен, плагин RaspberryJuice активен и порт 4711 не блокируется фаерволом.</li>
+                    <li><strong>Блоки не ставятся:</strong> проверьте, что вы находитесь в области загрузки чанков (не слишком далеко от спавна). Используйте <code>mc.player.getTilePos()</code> и стройте рядом.</li>
+                    <li><strong>ID блоков изменились:</strong> в новых версиях Minecraft некоторые ID могут отличаться. Используйте числовые идентификаторы из документации плагина или константы.</li>
+                    <li><strong>Производительность:</strong> не ставьте тысячи блоков в одном цикле без <code>time.sleep</code> — это может вызвать лаги. Разбивайте операции на части.</li>
+                    <li><strong>Многопоточность:</strong> библиотека mcpi не потокобезопасна, лучше использовать асинхронность или последовательные вызовы.</li>
+                </ul>
+            </section>
+
+            <section class="resources">
+                <h2>Где продолжить изучение</h2>
+                <p>Для углублённой работы с Python и Minecraft рекомендую следующие ресурсы:</p>
+                <ul>
+                    <li>Официальный репозиторий <strong>mcpi</strong> на GitHub — примеры и расширенная документация.</li>
+                    <li>Проект <strong>Adventures in Minecraft</strong> (David Whale) — книга с десятками скриптов и задач.</li>
+                    <li><strong>Minecraft Programming with Python</strong> — курс от Raspberry Pi Foundation.</li>
+                    <li>Плагин <strong>JuiceMind</strong> — более современная альтернатива RaspberryJuice для новых версий Minecraft.</li>
+                </ul>
+                <p>Со временем вы сможете создавать полноценные мини-игры (сапёр, паркур, квесты) прямо внутри Minecraft, используя Python как "мозг" игровых механик.</p>
+            </section>
+
+            <section class="conclusion">
+                <h2>Заключение</h2>
+                <p>Python и Minecraft — отличный тандем для обучения программированию и реализации творческих идей. Даже простые скрипты экономят часы ручного строительства и добавляют новые игровые механики. Начните с малого — напишите скрипт, который приветствует игрока, затем усложняйте его. Мир кубов станет вашей интерактивной песочницей для кода. Удачных экспериментов!</p>
+                <div class="footer-note">
+                    <span>Автор: Илья К.  —  Примеры адаптированы под mcpi v1.0+ и Minecraft Java 1.16.5</span>
+                </div>
+            </section>
+        </main>
+    </div>
+    <!-- Highlight.js скрипт для автоматической подсветки блоков кода -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Инициализация подсветки синтаксиса для всех языков
+        hljs.highlightAll();
+    </script>
+</body>
+</html>
