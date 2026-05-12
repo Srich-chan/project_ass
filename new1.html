@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Python скриптинг в Minecraft: практическое руководство с MineScript</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Highlight.js тема (минимальная, светлая) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <h1>Python для Minecraft</h1>
+            <p class="subhead">Написание скриптов, автоматизация и творчество в кубическом мире с MineScript</p>
+        </header>
+
+        <main class="content">
+            <section class="intro">
+                <p>Minecraft — это не только строительство и выживание, но и мощная платформа для обучения программированию. Используя Python и библиотеку <strong>MineScript</strong>, вы можете создавать скрипты, которые строят огромные конструкции, управляют игровыми сущностями, генерируют миры и даже создают мини-игры. В этой статье разберём основы написания скриптов на Python для Minecraft с использованием MineScript, познакомимся с ключевыми возможностями и напишем первый рабочий код.</p>
+            </section>
+
+            <section class="why-python">
+                <h2>Почему Python и MineScript?</h2>
+                <p>Python — идеальный выбор для автоматизации в Minecraft благодаря простоте, читаемости и богатой экосистеме. <strong>MineScript</strong> — это современная библиотека, которая работает через мод для Fabric, обеспечивая прямую интеграцию Python-скриптов с игрой без необходимости в отдельном серверном плагине. С его помощью даже новичок может за несколько минут написать скрипт, который построит пирамиду или телепортирует игрока. А опытные разработчики используют MineScript для создания сложных модов, ботов и целых серверных дополнений.</p>
+            </section>
+
+            <section class="tools">
+                <h2>Необходимые инструменты</h2>
+                <ul>
+                    <li><strong>Minecraft Java Edition</strong> (версия 1.19+ или 1.20+ для актуальных версий мода)</li>
+                    <li><strong>Fabric Loader</strong> — современный загрузчик модов для Minecraft</li>
+                    <li><strong>Мод MineScript</strong> для Fabric — мост между Python и игрой</li>
+                    <li><strong>Библиотека <code>minescript</code></strong> для Python — основной инструмент для управления миром</li>
+                    <li><strong>Python 3.8+</strong> и любой редактор кода (VS Code, PyCharm или даже Блокнот)</li>
+                </ul>
+                <p>MineScript работает как мод на стороне клиента (или сервера) Fabric. После его установки Python-скрипты могут подключаться напрямую к игре через локальный сокет и выполнять команды: ставить блоки, перемещать игрока, считывать позицию, обрабатывать события.</p>
+                <div class="note">
+                    <span class="note-title">Совет</span> — MineScript поддерживает не только одиночную игру, но и подключение к удалённым серверам. Вы можете запускать скрипты локально, а эффект будет виден в многопользовательской игре, если мод установлен на сервере.
+                </div>
+            </section>
+
+            <section class="setup">
+                <h2>Установка и настройка</h2>
+                <p>Пошаговая инструкция для быстрого старта:</p>
+                <ol>
+                    <li>Скачайте и установите <strong>Minecraft Java Edition</strong> (последнюю версию).</li>
+                    <li>Установите <strong>Fabric Loader</strong> для вашей версии Minecraft (с официального сайта fabricmc.net).</li>
+                    <li>Скачайте мод <strong>MineScript</strong> для вашей версии Minecraft (доступен на Modrinth или GitHub). Поместите jar-файл в папку <code>mods/</code>.</li>
+                    <li>Запустите Minecraft с профилем Fabric. Мод автоматически запустит локальный сервер для связи с Python-скриптами (по умолчанию порт 25575).</li>
+                    <li>Установите библиотеку <code>minescript</code> в Python: <code>pip install minescript</code>.</li>
+                    <li>Запустите мир Minecraft и выполните первый скрипт!</li>
+                </ol>
+                <p>Готово! Теперь вы можете управлять миром из Python без серверных плагинов.</p>
+            </section>
+
+            <section class="first-script">
+                <h2>Ваш первый скрипт: приветствие и алмазный блок</h2>
+                <p>Давайте создадим скрипт, который подключается к игре, отправляет сообщение игроку и размещает блок алмаза прямо перед ним.</p>
+                <pre><code class="language-python">import minescript
+import time
+
+# Отправляем сообщение в чат
+minescript.chat("Привет, Minecraft! Это Python скрипт с MineScript")
+
+# Получаем позицию игрока
+player_pos = minescript.player_position()
+x, y, z = int(player_pos[0]), int(player_pos[1]), int(player_pos[2])
+
+# Ставим алмазный блок прямо перед игроком (смещение по оси X)
+minescript.set_block(x + 2, y, z, "diamond_block")
+
+# Строим небольшую колонну из золота над алмазом
+for i in range(1, 4):
+    minescript.set_block(x + 2, y + i, z, "gold_block")
+    time.sleep(0.3)
+
+minescript.chat("Готово! Алмаз и золотая колонна созданы.")</code></pre>
+                <p>Сохраните этот код в файл <code>first_minescript.py</code>. Зайдите в мир Minecraft с установленным модом MineScript, выполните скрипт — и вы увидите, как в игре появляются блоки, а в чате появляются сообщения.</p>
+            </section>
+
+            <section class="api-basics">
+                <h2>Основы MineScript API</h2>
+                <p>Библиотека <code>minescript</code> предоставляет интуитивные методы для взаимодействия с миром. Рассмотрим ключевые возможности:</p>
+                <div class="code-grid">
+                    <div class="code-card">
+                        <h3>Работа с игроком</h3>
+                        <pre><code class="language-python">pos = minescript.player_position()
+minescript.teleport(x, y, z)
+# Получить направление взгляда
+yaw, pitch = minescript.player_orientation()</code></pre>
+                    </div>
+                    <div class="code-card">
+                        <h3>Блоки</h3>
+                        <pre><code class="language-python">minescript.set_block(x, y, z, "stone")
+minescript.fill(x1,y1,z1, x2,y2,z2, "air")
+block = minescript.get_block(x, y, z)</code></pre>
+                    </div>
+                    <div class="code-card">
+                        <h3>Чат и события</h3>
+                        <pre><code class="language-python">minescript.chat("текст")
+events = minescript.events()
+# Обработка ударов по блокам</code></pre>
+                    </div>
+                </div>
+                <p>В MineScript блоки указываются по текстовым идентификаторам (например, <code>"stone"</code>, <code>"oak_log"</code>, <code>"red_wool"</code>), что гораздо удобнее числовых ID. Полный список доступен в вики Minecraft или через автодополнение в IDE.</p>
+            </section>
+
+            <section class="examples">
+                <h2>Практические примеры скриптов</h2>
+                <p>Рассмотрим три полезных скрипта: автоматическое строительство пирамиды, телепортация по координатам и создание летающего острова.</p>
+
+                <h3>1. Строитель пирамиды из песчаника</h3>
+                <pre><code class="language-python">import minescript
+
+def build_pyramid(base_x, base_z, height, block_name):
+    # Получаем уровень земли из текущей позиции игрока
+    player_pos = minescript.player_position()
+    base_y = int(player_pos[1])
+    
+    for level in range(height):
+        size = height - level
+        offset = level
+        for i in range(size):
+            for j in range(size):
+                minescript.set_block(base_x + i + offset, base_y + level, base_z + j + offset, block_name)
+    minescript.chat("Пирамида готова!")
+
+# Построим пирамиду высотой 5 из песчаника
+build_pyramid(0, 0, 5, "sandstone")</code></pre>
+
+                <h3>2. Телепорт по координатам и сохранение позиций</h3>
+                <pre><code class="language-python">import minescript
+import json
+
+# Сохраняем текущую позицию
+def save_position(name):
+    pos = minescript.player_position()
+    with open(f"pos_{name}.json", "w") as f:
+        json.dump({"x": pos[0], "y": pos[1], "z": pos[2]}, f)
+    minescript.chat(f"Позиция '{name}' сохранена")
+
+# Телепортируемся к сохранённой позиции
+def load_position(name):
+    try:
+        with open(f"pos_{name}.json", "r") as f:
+            pos = json.load(f)
+        minescript.teleport(pos["x"], pos["y"], pos["z"])
+        minescript.chat(f"Телепортировались к '{name}'")
+    except FileNotFoundError:
+        minescript.chat("Позиция не найдена")
+
+# Использование:
+save_position("дом")
+# ... позже ...
+load_position("дом")</code></pre>
+
+                <h3>3. Летающий остров (сфера из камня)</h3>
+                <pre><code class="language-python">import minescript
+import math
+
+def sphere(center_x, center_y, center_z, radius, block_name):
+    for x in range(-radius, radius+1):
+        for y in range(-radius, radius+1):
+            for z in range(-radius, radius+1):
+                if x*x + y*y + z*z <= radius*radius:
+                    minescript.set_block(center_x + x, center_y + y, center_z + z, block_name)
+
+# Создаём каменную сферу радиусом 7 на высоте 70
+sphere(0, 70, 0, 7, "stone")
+minescript.chat("Остров-сфера создан!")</code></pre>
+                <p>Все эти скрипты можно комбинировать, добавлять циклы и условия — возможности ограничены лишь фантазией.</p>
+            </section>
+
+            <section class="advanced">
+                <h2>Продвинутые сценарии: события, анимация и боты</h2>
+                <p>MineScript позволяет обрабатывать события — например, когда игрок разрушает блок, умирает или получает урон. Вы можете написать реактивный скрипт, который реагирует на действия в реальном времени.</p>
+                <pre><code class="language-python">import minescript
+import time
+
+minescript.chat("Активирован детектор блоков. Ломай блоки!")
+
+while True:
+    events = minescript.events()
+    for event in events:
+        if event.type == "block_break":
+            x, y, z = event.x, event.y, event.z
+            minescript.chat(f"Сломан блок на координатах {x}, {y}, {z}")
+            # Восстанавливаем блок через секунду
+            time.sleep(0.5)
+            minescript.set_block(x, y, z, "cobblestone")
+    time.sleep(0.2)</code></pre>
+                <p>Также вы можете создавать анимированные конструкции, световые шоу, или написать простого бота, который следует за игроком и строит дорожку из розовой шерсти. MineScript поддерживает выполнение любых игровых команд через <code>minescript.execute("/команда")</code>.</p>
+            </section>
+
+            <section class="tips">
+                <h2>Полезные советы и частые ошибки</h2>
+                <ul class="tips-list">
+                    <li><strong>Соединение отклонено:</strong> убедитесь, что Minecraft запущен с модом MineScript (проверьте профиль Fabric и наличие мода в папке mods). Порт по умолчанию: 25575.</li>
+                    <li><strong>Блоки не ставятся:</strong> проверьте, что вы находитесь в области загрузки чанков. Используйте <code>minescript.player_position()</code> и стройте рядом с игроком.</li>
+                    <li><strong>Неверные названия блоков:</strong> MineScript использует текстовые идентификаторы, как в командах Minecraft. Например, <code>"diamond_block"</code>, <code>"red_wool"</code>, <code>"oak_stairs"</code>. При ошибке проверьте точное название в вики.</li>
+                    <li><strong>Производительность:</strong> не ставьте тысячи блоков в одном цикле без <code>time.sleep</code> — это может вызвать лаги. Разбивайте операции на части или используйте пакетные методы, где возможно.</li>
+                    <li><strong>Многопоточность:</strong> библиотека minescript не потокобезопасна, лучше использовать последовательные вызовы из одного потока.</li>
+                </ul>
+            </section>
+
+            <section class="resources">
+                <h2>Где продолжить изучение</h2>
+                <p>Для углублённой работы с Python и Minecraft через MineScript рекомендую следующие ресурсы:</p>
+                <ul>
+                    <li>Официальный репозиторий <strong>MineScript</strong> на GitHub — примеры, документация и исходный код.</li>
+                    <li>Страница мода на <strong>Modrinth</strong> или <strong>CurseForge</strong> — последние версии и обсуждения.</li>
+                    <li>Проект <strong>MineScript Examples</strong> — коллекция готовых скриптов для автоматического строительства, ферм и мини-игр.</li>
+                    <li>Сообщество в Discord — помощь, идеи проектов и обмен скриптами с другими разработчиками.</li>
+                </ul>
+                <p>Со временем вы сможете создавать полноценные мини-игры (сапёр, паркур, квесты) прямо внутри Minecraft, используя Python как "мозг" игровых механик, а MineScript как надёжный мост между кодом и игрой.</p>
+            </section>
+
+            <section class="conclusion">
+                <h2>Заключение</h2>
+                <p>Python и Minecraft с MineScript — отличный тандем для обучения программированию и реализации творческих идей. В отличие от устаревшего RaspberryJuice, MineScript работает на современных версиях игры через Fabric, поддерживает текстовые идентификаторы блоков и полноценную обработку событий. Даже простые скрипты экономят часы ручного строительства и добавляют новые игровые механики. Начните с малого — напишите скрипт, который приветствует игрока, затем усложняйте его. Мир кубов станет вашей интерактивной песочницей для кода. Удачных экспериментов!</p>
+                <div class="footer-note">
+                    <span>Автор: Илья К.  —  Примеры адаптированы под MineScript (Fabric) и Minecraft Java 1.20+</span>
+                </div>
+            </section>
+        </main>
+    </div>
+    <!-- Highlight.js скрипт для автоматической подсветки блоков кода -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        hljs.highlightAll();
+    </script>
+</body>
+</html>
