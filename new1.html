@@ -6,7 +6,7 @@
     <title>Python скриптинг в Minecraft: практическое руководство с MineScript</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
-    <!-- Highlight.js тема (минимальная, светлая) -->
+    <!-- Highlight.js тема -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -56,142 +56,87 @@
                 <p>Готово! Теперь вы можете управлять миром из Python без серверных плагинов.</p>
             </section>
 
+            <!-- 1. Приветствие и обзор случайных блоков -->
             <section class="first-script">
-                <h2>Ваш первый скрипт: приветствие и алмазный блок</h2>
-                <p>Давайте создадим скрипт, который подключается к игре, отправляет сообщение игроку и размещает блок алмаза прямо перед ним.</p>
-                <pre><code class="language-python">import minescript
-import time
-
-# Отправляем сообщение в чат
-minescript.chat("Привет, Minecraft! Это Python скрипт с MineScript")
-
-# Получаем позицию игрока
-player_pos = minescript.player_position()
-x, y, z = int(player_pos[0]), int(player_pos[1]), int(player_pos[2])
-
-# Ставим алмазный блок прямо перед игроком (смещение по оси X)
-minescript.set_block(x + 2, y, z, "diamond_block")
-
-# Строим небольшую колонну из золота над алмазом
-for i in range(1, 4):
-    minescript.set_block(x + 2, y + i, z, "gold_block")
-    time.sleep(0.3)
-
-minescript.chat("Готово! Алмаз и золотая колонна созданы.")</code></pre>
-                <p>Сохраните этот код в файл <code>first_minescript.py</code>. Зайдите в мир Minecraft с установленным модом MineScript, выполните скрипт — и вы увидите, как в игре появляются блоки, а в чате появляются сообщения.</p>
-            </section>
-
-            <section class="api-basics">
-                <h2>Основы MineScript API</h2>
-                <p>Библиотека <code>minescript</code> предоставляет интуитивные методы для взаимодействия с миром. Рассмотрим ключевые возможности:</p>
-                <div class="code-grid">
-                    <div class="code-card">
-                        <h3>Работа с игроком</h3>
-                        <pre><code class="language-python">pos = minescript.player_position()
-minescript.teleport(x, y, z)
-# Получить направление взгляда
-yaw, pitch = minescript.player_orientation()</code></pre>
-                    </div>
-                    <div class="code-card">
-                        <h3>Блоки</h3>
-                        <pre><code class="language-python">minescript.set_block(x, y, z, "stone")
-minescript.fill(x1,y1,z1, x2,y2,z2, "air")
-block = minescript.get_block(x, y, z)</code></pre>
-                    </div>
-                    <div class="code-card">
-                        <h3>Чат и события</h3>
-                        <pre><code class="language-python">minescript.chat("текст")
-events = minescript.events()
-# Обработка ударов по блокам</code></pre>
+                <h2>1. Приветствие и случайный обзор блоков</h2>
+                <p>Дружелюбный скрипт, который здоровается с миром и на протяжении 30 секунд наводит камеру на случайные блоки вокруг игрока, показывая их названия в чате.</p>
+                <div class="script-demo">
+                    <pre><code class="language-python" data-src="scripts/ms1_example.py">Загрузка скрипта...</code></pre>
+                    <div class="media-box">
+                        <video controls muted loop>
+                            <source src="videos/ms1.mp4" type="video/mp4">
+                        </video>
                     </div>
                 </div>
-                <p>В MineScript блоки указываются по текстовым идентификаторам (например, <code>"stone"</code>, <code>"oak_log"</code>, <code>"red_wool"</code>), что гораздо удобнее числовых ID. Полный список доступен в вики Minecraft или через автодополнение в IDE.</p>
+                <p>Файл: <code>ms1_example.py</code>. Отлично подходит для первого знакомства с MineScript.</p>
             </section>
 
-            <section class="examples">
-                <h2>Практические примеры скриптов</h2>
-                <p>Рассмотрим три полезных скрипта: автоматическое строительство пирамиды, телепортация по координатам и создание летающего острова.</p>
-
-                <h3>1. Строитель пирамиды из песчаника</h3>
-                <pre><code class="language-python">import minescript
-
-def build_pyramid(base_x, base_z, height, block_name):
-    # Получаем уровень земли из текущей позиции игрока
-    player_pos = minescript.player_position()
-    base_y = int(player_pos[1])
-    
-    for level in range(height):
-        size = height - level
-        offset = level
-        for i in range(size):
-            for j in range(size):
-                minescript.set_block(base_x + i + offset, base_y + level, base_z + j + offset, block_name)
-    minescript.chat("Пирамида готова!")
-
-# Построим пирамиду высотой 5 из песчаника
-build_pyramid(0, 0, 5, "sandstone")</code></pre>
-
-                <h3>2. Телепорт по координатам и сохранение позиций</h3>
-                <pre><code class="language-python">import minescript
-import json
-
-# Сохраняем текущую позицию
-def save_position(name):
-    pos = minescript.player_position()
-    with open(f"pos_{name}.json", "w") as f:
-        json.dump({"x": pos[0], "y": pos[1], "z": pos[2]}, f)
-    minescript.chat(f"Позиция '{name}' сохранена")
-
-# Телепортируемся к сохранённой позиции
-def load_position(name):
-    try:
-        with open(f"pos_{name}.json", "r") as f:
-            pos = json.load(f)
-        minescript.teleport(pos["x"], pos["y"], pos["z"])
-        minescript.chat(f"Телепортировались к '{name}'")
-    except FileNotFoundError:
-        minescript.chat("Позиция не найдена")
-
-# Использование:
-save_position("дом")
-# ... позже ...
-load_position("дом")</code></pre>
-
-                <h3>3. Летающий остров (сфера из камня)</h3>
-                <pre><code class="language-python">import minescript
-import math
-
-def sphere(center_x, center_y, center_z, radius, block_name):
-    for x in range(-radius, radius+1):
-        for y in range(-radius, radius+1):
-            for z in range(-radius, radius+1):
-                if x*x + y*y + z*z <= radius*radius:
-                    minescript.set_block(center_x + x, center_y + y, center_z + z, block_name)
-
-# Создаём каменную сферу радиусом 7 на высоте 70
-sphere(0, 70, 0, 7, "stone")
-minescript.chat("Остров-сфера создан!")</code></pre>
-                <p>Все эти скрипты можно комбинировать, добавлять циклы и условия — возможности ограничены лишь фантазией.</p>
+            <!-- 2. Поиск и подсветка блоков -->
+            <section class="example">
+                <h2>2. Поиск и подсветка блоков</h2>
+                <p>Скрипт заменяет случайный блок на голубой терракот, а затем аккуратно обшаривает окрестности, поворачивая камеру, чтобы найти эту метку и подсветить её известью.</p>
+                <div class="script-demo">
+                    <pre><code class="language-python" data-src="scripts/ms1_look.py">Загрузка...</code></pre>
+                    <div class="media-box">
+                        <video controls muted loop>
+                            <source src="videos/ms2_loop.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
             </section>
 
+            <!-- 3. Телепорт -->
+            <section class="example">
+                <h2>3. Телепорт по координатам</h2>
+                <p>Быстрое перемещение в любую точку мира. При запуске можно передать координаты через аргументы командной строки, либо скрипт использует точку по умолчанию <code>(0, 56, 0)</code>.</p>
+                <div class="script-demo">
+                    <pre><code class="language-python" data-src="scripts/ms3_tp.py">Загрузка...</code></pre>
+                    <div class="media-box">
+                        <video controls muted loop>
+                            <source src="videos/ms3.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <p>Файл: <code>ms3_tp.py</code>. Полезно для быстрых путешествий и автоматизации.</p>
+            </section>
+
+            <!-- 4. Автоматический бег к точке (видео нет) -->
+            <section class="example">
+                <h2>4. Автоматический бег к заданным координатам</h2>
+                <p>Заставляет персонажа идти или бежать к указанной горизонтальной цели, плавно поворачивая камеру и удерживая клавишу вперёд. Может последовательно обежать несколько случайных точек и вернуться назад.</p>
+                <div class="script-demo">
+                    <pre><code class="language-python" data-src="scripts/ms4_puk.py">Загрузка...</code></pre>
+             
+                </div>
+                <p><em>Видео для этого примера не предусмотрено.</em> Файл: <code>ms4_puk.py</code>.</p>
+            </section>
+
+            <!-- 5. Взрывная дорожка (TNT) -->
+            <section class="example">
+                <h2>5. Спринт со взрывающейся дорожкой</h2>
+                <p>Пока игрок движется, под его ногами остаётся красная бетонная дорожка. После остановки на месте каждого такого блока появляется динамит, который мгновенно взрывается, а исходный ландшафт восстанавливается.</p>
+                <div class="script-demo">
+                    <pre><code class="language-python" data-src="scripts/ms5_runrunrun.py">Загрузка...</code></pre>
+                    <div class="media-box">
+                        <video controls muted loop>
+                            <source src="videos/ms5.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. Разрушительный спринт с TNT-дорожкой (продвинутый) -->
             <section class="advanced">
-                <h2>Продвинутые сценарии: события, анимация и боты</h2>
-                <p>MineScript позволяет обрабатывать события — например, когда игрок разрушает блок, умирает или получает урон. Вы можете написать реактивный скрипт, который реагирует на действия в реальном времени.</p>
-                <pre><code class="language-python">import minescript
-import time
-
-minescript.chat("Активирован детектор блоков. Ломай блоки!")
-
-while True:
-    events = minescript.events()
-    for event in events:
-        if event.type == "block_break":
-            x, y, z = event.x, event.y, event.z
-            minescript.chat(f"Сломан блок на координатах {x}, {y}, {z}")
-            # Восстанавливаем блок через секунду
-            time.sleep(0.5)
-            minescript.set_block(x, y, z, "cobblestone")
-    time.sleep(0.2)</code></pre>
+                <h2>6. Разрушительный спринт с TNT-дорожкой (продвинутый)</h2>
+                <p>Похож на предыдущий скрипт, но с грандиозным финалом: после очистки дорожки в небе над игроком случайным образом появляется сотня TNT, создавая мощный «фейерверк».</p>
+                <div class="script-demo">
+                    <pre><code class="language-python" data-src="scripts/ms6_tnt_path.py">Загрузка...</code></pre>
+                    <div class="media-box">
+                        <video controls muted loop>
+                            <source src="videos/ms6.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
                 <p>Также вы можете создавать анимированные конструкции, световые шоу, или написать простого бота, который следует за игроком и строит дорожку из розовой шерсти. MineScript поддерживает выполнение любых игровых команд через <code>minescript.execute("/команда")</code>.</p>
             </section>
 
@@ -227,10 +172,30 @@ while True:
             </section>
         </main>
     </div>
-    <!-- Highlight.js скрипт для автоматической подсветки блоков кода -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>
-        hljs.highlightAll();
+        document.addEventListener('DOMContentLoaded', () => {
+            const codeBlocks = document.querySelectorAll('code[data-src]');
+            codeBlocks.forEach(block => {
+                const src = block.getAttribute('data-src');
+                if (!src) return;
+                fetch(src)
+                    .then(response => {
+                        if (!response.ok) throw new Error(`Ошибка ${response.status}`);
+                        return response.text();
+                    })
+                    .then(text => {
+                        block.textContent = text;
+                        hljs.highlightElement(block);
+                    })
+                    .catch(err => {
+                        console.error('Не удалось загрузить скрипт:', src, err);
+                        block.textContent = `# Не удалось загрузить скрипт: ${src}\n# ${err.message}`;
+                        hljs.highlightElement(block);
+                    });
+            });
+        });
     </script>
 </body>
 </html>

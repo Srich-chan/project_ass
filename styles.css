@@ -1,7 +1,3 @@
-/* styles.css — минимальный и аккуратный дизайн для статьи про Python и Minecraft */
-/* Используется только Google Fonts (Inter), без эмодзи и сложных анимаций */
-/* Цвета фона подсветки приведены к единому стилю со страницей */
-
 * {
     margin: 0;
     padding: 0;
@@ -25,7 +21,6 @@ body {
     overflow: hidden;
 }
 
-/* Шапка */
 .header {
     padding: 2.5rem 2rem 1.5rem 2rem;
     border-bottom: 1px solid #e2e8f0;
@@ -52,12 +47,10 @@ body {
     margin-top: 0.5rem;
 }
 
-/* Основной контент */
 .content {
     padding: 1.8rem 2rem 2.5rem 2rem;
 }
 
-/* Стили секций */
 section {
     margin-bottom: 2.8rem;
 }
@@ -84,7 +77,6 @@ p {
     color: #1e293b;
 }
 
-/* Списки */
 ul, ol {
     margin: 0.75rem 0 1rem 1.8rem;
     color: #1f2937;
@@ -95,7 +87,6 @@ li {
     line-height: 1.5;
 }
 
-/* Блоки кода — единый стиль для всех пре-блоков, включая highlight.js */
 pre {
     background: #0f172a;
     border-radius: 16px;
@@ -104,7 +95,6 @@ pre {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-/* Переопределяем стандартные стили highlight.js, чтобы фон соответствовал теме */
 pre code.hljs,
 code.hljs {
     background: #0f172a !important;
@@ -119,14 +109,12 @@ code.hljs {
     display: block;
 }
 
-/* Специфичные цвета для синтаксиса в темной теме (github.min.css поверх, но мы переопределяем) */
-/* Ключевые слова, операторы, функции — делаем читабельными на темном фоне */
 .hljs-keyword,
 .hljs-selector-tag,
 .hljs-built_in,
 .hljs-name,
 .hljs-tag {
-    color: #f472b6 !important;  /* розовый для ключевых слов */
+    color: #f472b6 !important;
 }
 
 .hljs-string,
@@ -138,23 +126,23 @@ code.hljs {
 .hljs-template-variable,
 .hljs-type,
 .hljs-addition {
-    color: #a3e635 !important;  /* светло-зеленый для строк */
+    color: #a3e635 !important;
 }
 
 .hljs-comment,
 .hljs-quote,
 .hljs-deletion,
 .hljs-meta {
-    color: #94a3b8 !important;  /* серый для комментариев */
+    color: #94a3b8 !important;
 }
 
 .hljs-number {
-    color: #facc15 !important;  /* желтый для чисел */
+    color: #facc15 !important;
 }
 
 .hljs-function .hljs-title,
 .hljs-class .hljs-title {
-    color: #60a5fa !important;  /* голубой для функций */
+    color: #60a5fa !important;
 }
 
 .hljs-variable,
@@ -162,7 +150,6 @@ code.hljs {
     color: #cbd5e1 !important;
 }
 
-/* Инлайн-код (внутри текста) */
 code:not(pre code) {
     font-family: 'Menlo', 'Monaco', 'Cascadia Code', monospace;
     background: #f1f5f9;
@@ -172,7 +159,6 @@ code:not(pre code) {
     color: #0c4a6e;
 }
 
-/* Заметка (note) */
 .note {
     background: #eff6ff;
     border-left: 4px solid #3b82f6;
@@ -189,7 +175,6 @@ code:not(pre code) {
     margin-right: 0.3rem;
 }
 
-/* Сетка для карточек с API */
 .code-grid {
     display: flex;
     flex-wrap: wrap;
@@ -222,12 +207,10 @@ code:not(pre code) {
     font-size: 0.75rem;
 }
 
-/* Стили для списка советов */
 .tips-list {
     list-style-type: square;
 }
 
-/* Футер внутри последней секции */
 .footer-note {
     margin-top: 1.8rem;
     padding-top: 1rem;
@@ -237,7 +220,6 @@ code:not(pre code) {
     border-top: 1px solid #e2e8f0;
 }
 
-/* Адаптивность */
 @media (max-width: 680px) {
     body {
         padding: 1rem;
@@ -265,7 +247,6 @@ code:not(pre code) {
     }
 }
 
-/* Простые улучшения читаемости */
 a {
     color: #2563eb;
     text-decoration: none;
@@ -281,7 +262,40 @@ strong {
     font-weight: 600;
 }
 
-/* Визуальное разделение для примеров */
 section h3 + pre {
     margin-top: 0.5rem;
+}
+
+/* ====== Дополнительные стили для контейнеров скрипт + видео ====== */
+.script-demo {
+    display: flex;
+    gap: 1.8rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+.script-demo pre {
+    flex: 1 1 300px;
+    margin: 0;
+    min-width: 280px;
+    overflow-x: auto;
+    background: #0f172a !important;   /* переопределяем фон */
+    border-radius: 16px;
+    padding: 0;                        /* убираем padding, он уже внутри code */
+}
+.script-demo .media-box {
+    flex: 0 0 380px;            /* было 280px – увеличено */
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+.script-demo video {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;       /* сохраняет пропорции, можно убрать */
+    min-height: 220px;          /* гарантирует заметную высоту */
+    background: #f0f0f0;
+    border: 1px dashed #aaa;
+    border-radius: 6px;
 }
